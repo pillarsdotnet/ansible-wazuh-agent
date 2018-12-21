@@ -1,0 +1,8 @@
+---
+
+wazuh_agent_wodle_openscap_content_:
+  +type: 'xccdf'
+  +path: 'ssg-fedora-ds.xml'
+  profile:
+    - 'xccdf_org.ssgproject.content_profile_common'
+    - 'xccdf_org.ssgproject.content_profile_pci-dss'

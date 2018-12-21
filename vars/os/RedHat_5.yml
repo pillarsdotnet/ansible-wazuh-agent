@@ -1,0 +1,7 @@
+---
+
+wazuh_cis_file: 'cis_rhel5_linux_rcl.txt'
+
+wazuh_repo: 'https://packages.wazuh.com/3.x/yum/5/'
+
+wazuh_repo_key: 'https://packages.wazuh.com/key/GPG-KEY-WAZUH-5'

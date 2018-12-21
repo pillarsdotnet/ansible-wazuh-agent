@@ -1,0 +1,5 @@
+---
+
+- name: 'xml'
+  src: 'https://github.com/GSA/ansible-xml.git'
+  version: 'master'

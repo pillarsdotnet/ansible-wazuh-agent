@@ -1,0 +1,28 @@
+---
+
+- name: 'Include os vars.'
+  include_vars:
+    dir: 'os'
+    files_matching: "({{ ansible_system }}|{{ ansible_os_family }})\
+                     (_{{ ansible_distribution }})?\
+                     (_{{ ansible_distribution_major_version }})?.yml"
+
+- name: 'Check certain ossec_config settings.'
+  block:
+    - name: 'Check whether certain wodles are enabled.'
+      include_tasks: 'check_wodle.yml'
+      loop: '{{ [ossec_config.wodle|default([])]|flatten }}'
+      loop_control:
+        loop_var: 'wazuh_wodle'
+  tags:
+    - 'init'
+  vars:
+    ossec_config: '{{ wazuh_agent.ossec_config }}'
+  when:
+    - '"ossec_config" in wazuh_agent_config'
+
+- import_tasks: "Windows.yml"
+  when: 'ansible_os_family == "Windows"'
+
+- import_tasks: "Linux.yml"
+  when: 'ansible_system == "Linux"'

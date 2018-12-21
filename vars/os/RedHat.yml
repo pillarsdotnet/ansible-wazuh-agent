@@ -1,0 +1,8 @@
+---
+
+oracle_java_rpm: "http://download.oracle.com/otn-pub/java/jdk/8u171-b11/\
+                  512cd62ec5174c3487ac17c61aaa89e8/jre-8u171-linux-x64.rpm"
+
+wazuh_repo: 'https://packages.wazuh.com/3.x/yum/'
+
+wazuh_repo_key: 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'

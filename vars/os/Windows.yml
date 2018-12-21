@@ -1,0 +1,26 @@
+---
+
+wazuh_agent_rootcheck_basedirectory_: 'C:/'
+
+wazuh_agent_rootcheck_rootkitdir_: 'C:/Program Files (x86)/ossec-agent'
+
+wazuh_agent_rootcheck_windowsapps_: './shared/win_applications_rcl.txt'
+
+wazuh_agent_rootcheck_windowsaudit_: './shared/win_audit_rcl.txt'
+
+wazuh_agent_rootcheck_windowsmalware_: './shared/win_malware_rcl.txt'
+
+wazuh_agent_syscheck_directories_:
+  +check_all: true
+  +realtime: true
+  +restrict: '^C:/Program Files (x86)/ossec-agent/shared/agent.conf$'
+  _: 'C:/Program Files (x86)/ossec-agent/shared'
+
+wazuh_agent_syscheck_windowsregistry_:
+  - +arch: 'both'
+    _: 'HKEY_LOCAL_MACHINE\Software\Classes\batfile'
+  - 'HKEY_LOCAL_MACHINE\Software\Classes\Folder'
+
+wazuh_agent_wodle_osquery_bindir_: 'C:/ProgramData/osquery'
+
+wazuh_agent_wodle_osquery_logdir_: 'C:/ProgramData/osquery'

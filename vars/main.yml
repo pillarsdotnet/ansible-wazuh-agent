@@ -1,0 +1,315 @@
+---
+
+wazuh_agent_schema:
+  ossec_config:
+    .required: true
+    +name: &optional_string
+      .default: ''
+      _: &any '^.*$'
+    +os: *optional_string
+    +profile: *optional_string
+    active-response:
+      ca_store:
+        .default: 'wpk_root.pem'
+        _: &non_empty '^.+$'
+      ca_verification: &default_true
+        .default: true
+        _: &bool 'bool(yes,no)'
+      disabled: &default_false
+        .default: false
+        _: *bool
+      repeated_offenders: &posint 'range(1,,{:.0f})'
+    client:
+      .required: true
+      auto_restart: *default_true
+      config-profile: *optional_string
+      crypto_method:
+        .default: 'aes'
+        _:
+          - 'aes'
+          - 'blowfish'
+      local_ip: &ip 'ipaddr'
+      notify_time:
+        .default: 60
+        _: *posint
+      server:
+        .required: true
+        address:
+          .required: true
+          _: &hostname '^[A-Za-z0-9][A-Za-z0-9.-]{0,253}[A-Za-z0-9]$'
+        port:
+          .default: 1514
+          _: &port 'range(1,65535,{:.0f})'
+        protocol:
+          .default: 'udp'
+          _: &protocol
+            - 'tcp'
+            - 'udp'
+      time-reconnect:
+        .default: 300
+        _: *posint
+    client_buffer:
+      disabled: *default_false
+      events_per_second:
+        .default: 500
+        _: 'range(1,1000,{:.0f})'
+      queue_size:
+        .default: 5000
+        _: 'range(1,100000,{:.0f})'
+    labels:
+      label: &label
+        +hidden: *default_false
+        +key: &required_string
+          .required: true
+          _: *non_empty
+        _: *non_empty
+    localfile:
+      alias: *optional_string
+      command: *optional_string
+      frequency:
+        .default: 360
+        _: *posint
+      label: *label
+      location: *optional_string
+      log_format:
+        .required: true
+        _: "^(apache|audit|command|djb-multilog|eventchannel|eventlog|\
+              full_command|iis|json|multi_line:[1-9]\\d*|mysql_log|nmapg|\
+              postgresql_log|snort-fast|snort-full|squid|syslog)$"
+      only-future-events: *default_false
+      out_format:
+        +target: *optional_string
+        _: *non_empty
+      query: *optional_string
+      target:
+        .default: 'agent'
+        _: *non_empty
+    logging:
+      log_format:
+        .default: 'plain'
+        _:
+          - 'json'
+          - 'json,plain'
+          - 'plain'
+          - 'plain,json'
+    rootcheck:
+      base_directory:
+        .default: '{{ wazuh_agent_rootcheck_basedirectory_ }}'
+        _: *non_empty
+      check_dev: *default_true
+      check_files: *default_false
+      check_if: *default_true
+      check_pids: *default_true
+      check_ports: *default_true
+      check_sys: *default_true
+      check_trojans: *default_false
+      check_unixaudit: *default_false
+      check_winapps: *default_false
+      check_winaudit: *default_false
+      check_winmalware: *default_false
+      disabled: *default_false
+      frequency:
+        .default: 43200
+        _: '^(hourly|daily|0|[1-9]\d*)$'
+      readall: *default_false
+      rootkit_files: *required_string
+      rootkit_trojans: *required_string
+      scanall: *default_false
+      skip_nfs: *default_false
+      system_audit: *optional_string
+      windows_apps: *optional_string
+      windows_audit: *optional_string
+      windows_malware: *optional_string
+    socket:
+      location: *optional_string
+      mode:
+        .default: 'udp'
+        _: *protocol
+      name:
+        .required: true
+        _: '^(?!agent$).+$'
+      prefix: *optional_string
+    syscheck:
+      alert_new_files: *default_false
+      auto_ignore:
+        +frequency:
+          .default: 10
+          _: 'range(1,99,{:.0f})'
+        +timeframe:
+          .default: 3600
+          _: 'range(1,43200,{:.0f})'
+        .default: false
+        _: *bool
+      directories:
+        +realtime: *default_false
+        +whodata: *default_false
+        +report_changes: *default_false
+        +check_all: *default_false
+        +check_sum: *default_false
+        +check_sha1sum: *default_false
+        +check_md5sum: *default_false
+        +check_sha256sum: *default_false
+        +check_size: *default_false
+        +check_owner: *default_false
+        +check_group: *default_false
+        +check_perm: *default_false
+        +check_mtime: *default_false
+        +check_inode: *default_false
+        +restrict: *optional_string
+        +tags: *optional_string
+        +recursion_level: 'range(0,320,{:.0f})'
+        _:
+          .required: true
+          _: *non_empty
+      frequency:
+        .default: 43200
+        _: *posint
+      ignore: &dirlist
+        +type: *optional_string
+        _: *non_empty
+      nodiff: *dirlist
+      prefilter_cmd: *optional_string
+      registry_ignore: *optional_string
+      remove_old_diff: *default_true
+      restart_audit: *default_true
+      scan_day: &wday
+        - 'fri'
+        - 'friday'
+        - 'mon'
+        - 'monday'
+        - 'sat'
+        - 'saturday'
+        - 'sun'
+        - 'sunday'
+        - 'thu'
+        - 'thursday'
+        - 'tue'
+        - 'tuesday'
+        - 'wed'
+        - 'wednesday'
+        - 'weekdays'
+        - 'weekends'
+      scan_on_start: *default_true
+      scan_time: &time '^[0-9]{1,2}(:[0-9]{1,2})? *([aApP][mM]?)?$'
+      skip_nfs: *default_true
+      windows_audit_interval:
+        .default: 0
+        _: &nonneg 'range(0,,{:.0f})'
+      windows_registry:
+        +arch:
+          - '32bit'
+          - '64bit'
+          - 'both'
+        +tag: *optional_string
+        _: *non_empty
+    wodle:
+      +name:
+        - 'aws-s3'
+        - 'cis-cat'
+        - 'command'
+        - 'open-scap'
+        - 'osquery'
+        - 'syscollector'
+      add_labels: *default_true
+      bin_path:
+        .default: '{{ wazuh_agent_wodle_osquery_bindir_ }}/osqueryd'
+        _: *any
+      bucket:
+        +type:
+          - 'cloudtrail'
+          - 'custom'
+        access_key: *optional_string  # To-Do: Find a regex.
+        aws_account_alias: *optional_string
+        aws_account_id: &aws_accounts '^\d{12}(, \d{12})*$'
+        aws_profile: *optional_string  # To-Do: Find a regex.
+        iam_role_arn: *optional_string  # To-Do: Find a regex.
+        name: *optional_string  # To-Do: Find a regex for AWS names.
+        only_logs_after:
+          .default: '1970-JAN-01'
+          _: 'strftime(YYYY-MM-DD)'
+        path: *optional_string  # To-Do: Find a regex.
+        regions: *optional_string  # To-Do: Find a regex.
+        secret_key: *optional_string  # To-Do: Find a regex.
+      ciscat_path: *optional_string
+      command: *optional_string
+      config_path:
+        .default: '{{ wazuh_agent_wodle_osquery_confdir_ }}/osquery.conf'
+        _: *non_empty
+      content:
+        +cpe: *optional_string
+        +datastream-id: *optional_string
+        +oval-id: *optional_string
+        +path: *optional_string
+        +profile: *optional_string
+        +timeout: *posint
+        +type:
+          - 'oval'
+          - 'xccdf'
+        +xccdf-id: *optional_string
+      day: &mday 'range(1,31,{:.0f})'
+      disabled: *default_false
+      feed:
+        +name:
+          - 'debian-7'
+          - 'debian-8'
+          - 'debian-9'
+          - 'redhat-5'
+          - 'redhat-6'
+          - 'redhat-7'
+          - 'ubuntu-12'
+          - 'ubuntu-14'
+          - 'ubuntu-16'
+          - 'ubuntu-18'
+        allow: *optional_string
+        disabled: *bool
+        path: *optional_string  # Relative to /var/ossec/wodles/oscap/policies
+        update_interval: &interval '^[0-9]+[smhd]?$'
+        url:
+          +port:
+            .default: 443
+            _: *port
+          _: *non_empty
+      hardware: *default_true
+      ignore_output: *default_false
+      ignore_time:
+        .default: '6h'
+        _: *interval
+      interval: *interval
+      # Default 10m for name = aws-s3
+      # Default 1d for name = cis-cat|openscap
+      # Default 2s for name = command
+      # Default 1h for name = syscollector
+      java_path: *optional_string
+      log_path:
+        .default: '{{ wazuh_agent_wodle_osquery_logdir_
+                   }}/osqueryd.results.log'
+        _: *non_empty
+      network: *default_true
+      os: *default_true
+      pack:
+        +name: *optional_string
+        _: *non_empty
+      packages: *default_true
+      ports: *default_true
+      processes: *default_true
+      remove_from_bucket: *default_true
+      run_daemon: *default_true
+      run_on_start: *default_true
+      scan-on-start: *default_true  # For name = ciscat|openscap
+      scan_on_start: *default_true  # For name = syscollector
+      skip_on_error: *default_true
+      skip_verification: *default_false
+      tag: *optional_string
+      time: *time
+      timeout:
+        .default: 1800
+        _: *nonneg
+      verify_md5: '^[a-zA-Z0-9]{32}$'
+      verify_sha1: '^[a-zA-Z0-9]{40}$'
+      verify_sha256: '^[a-zA-Z0-9]{64}$'
+
+      wday: *wday
+
+wazuh_manual: 'https://documentation.wazuh.com/current/user-manual'
+
+wazuh_reference: '{{ wazuh_manual }}/reference'
