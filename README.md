@@ -24,7 +24,7 @@ Role Variables
 --------------
 
 * `wazuh_agent`: Wazuh agent [local configuration](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/index.html)
-  * `wazuh_agent_activeresponse: 'Settings for [active-response](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/active-response.html) section
+  * `wazuh_agent_activeresponse`: Settings for [active-response](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/active-response.html) section
   * `wazuh_agent_client`: Settings for [client](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/client.html) section
   * `wazuh_agent_clientbuffer`: Settings for [client_buffer](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/client_buffer.html) section
   * `wazuh_agent_labels`: Settings for [labels](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/labels.html) section
