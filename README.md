@@ -1,7 +1,7 @@
-Ansible Playbook - Wazuh agent
-==============================
+wazuh-agent
+===========
 
-This role will install and configure a Wazuh Agent.
+This role will install and configure the Wazuh Agent service.
 
 OS Requirements
 ----------------
@@ -47,15 +47,13 @@ Role Variables
   * `wazuh_authd_sslca`: Filename of CA certificate (in `/var/ossec/etc`) used to [verify](https://documentation.wazuh.com/current/user-manual/reference/tools/agent-auth.html?highlight=verify) the server.
   * `wazuh_authd_sslcert`: Filename of [agent certificate](https://documentation.wazuh.com/current/user-manual/reference/tools/agent-auth.html?highlight=-x) (in `/var/ossec/etc`).
 
-Playbook example
+Example Playbook
 ----------------
-
-The following is an example of how this role can be used:
 
 ```
      - hosts: all:!wazuh-manager
        roles:
-         - ansible-wazuh-agent
+         - 'ansible-wazuh-agent'
        vars:
          wazuh_agent_client_server_address: 'wazuh-manager.example.com'
          wazuh_agent_client_server_protocol: 'tcp'
@@ -68,6 +66,4 @@ License
 
 BSD
 
-### Created by Robert Vincent (robert.vincent@gsa.gov)
-
-### Based on [previous work](https://github.com/wazuh/wazuh-ansible) by Wazuh, Inc.
+### Created by [Robert Vincent](mailto:robert.vincent@gsa.gov) based on [previous work](https://github.com/wazuh/wazuh-ansible) by Wazuh, Inc.

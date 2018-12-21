@@ -174,9 +174,11 @@ wazuh_agent_rootcheck_windowsmalware: '{{
 
 wazuh_agent_rootcheck_windowsmalware_: null
 
-wazuh_agent_socket: '{{ wazuh_agent_socket_custom if wazuh_agent_socket_name else null }}'
+wazuh_agent_socket: '{{
+ (wazuh_agent_socket_name is none)
+ |ternary(none, wazuh_agent_socket_) }}'
 
-wazuh_agent_socket_custom:
+wazuh_agent_socket_:
   location: '{{ wazuh_agent_socket_location }}'
   mode: '{{ wazuh_agent_socket_mode }}'
   name: '{{ wazuh_agent_socket_name }}'
@@ -188,7 +190,7 @@ wazuh_agent_socket_mode: 'udp'
 
 wazuh_agent_socket_name: null
 
-wazuh_agent_socket_prefix: 'custom
+wazuh_agent_socket_prefix: 'custom'
 
 wazuh_agent_syscheck:
   alert_new_files: '{{ wazuh_agent_syscheck_alertnewfiles }}'
