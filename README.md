@@ -24,7 +24,7 @@ Role Variables
 --------------
 
 * `wazuh_agent`: Wazuh agent [local configuration](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/index.html)
-  * `wazuh_agent_activeresponse: 'Settings for [active-response](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/active-response.html) section
+  * `wazuh_agent_activeresponse`: Settings for [active-response](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/active-response.html) section
   * `wazuh_agent_client`: Settings for [client](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/client.html) section
   * `wazuh_agent_clientbuffer`: Settings for [client_buffer](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/client_buffer.html) section
   * `wazuh_agent_labels`: Settings for [labels](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/labels.html) section
@@ -58,7 +58,7 @@ The following is an example of how this role can be used:
          - ansible-wazuh-agent
        vars:
          wazuh_agent_client_server_address: 'wazuh-manager.example.com'
-	     wazuh_agent_client_server_protocol: 'tcp'
+         wazuh_agent_client_server_protocol: 'tcp'
          wazuh_authd_enable: true
          wazuh_authd_pass: 'S3CR3T'
 ```
@@ -68,8 +68,6 @@ License
 
 BSD
 
-### Based on previouos work by Wazuh inc.
+### Created by Robert Vincent (robert.vincent@gsa.gov)
 
-  - https://github.com/wazuh/wazuh-ansible
-
-### Modified by Robert Vincent (robert.vincent@gsa.gov)
+### Based on [previous work](https://github.com/wazuh/wazuh-ansible) by Wazuh, Inc.
