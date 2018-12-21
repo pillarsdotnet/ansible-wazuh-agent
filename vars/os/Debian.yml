@@ -1,0 +1,17 @@
+---
+
+oracle_java_repo: 'ppa:webupd8team/java'
+
+oracle_java_dist: 'xenial'
+
+oracle_java_pkg: 'oracle-java8-installer'
+
+wazuh_cis_file: 'cis_debian_linux_rcl.txt'
+
+wazuh_agent_localfile_syslog_messages_location: '/var/log/syslog'
+
+wazuh_agent_localfile_syslog_secure_location: '/var/log/auth.log'
+
+wazuh_repo: 'deb https://packages.wazuh.com/3.x/apt/ stable main'
+
+wazuh_repo_key: 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'

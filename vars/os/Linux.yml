@@ -1,0 +1,112 @@
+---
+
+wazuh_agent_localfile_: '{{ wazuh_agent_localfile_command
+                      |union(wazuh_agent_localfile_syslog }}'
+
+wazuh_agent_localfile_command:
+  - '{{ wazuh_agent_localfile_command_df }}'
+  - '{{ wazuh_agent_localfile_command_last }}'
+  - '{{ wazuh_agent_localfile_command_netstat }}'
+
+wazuh_agent_localfile_command_df:
+  command: '{{ wazuh_agent_localfile_command_df_command }}'
+  frequency: '{{ wazuh_agent_localfile_command_df_frequency }}'
+  log_format: 'command'
+
+wazuh_agent_localfile_command_df_command: 'df -P'
+
+wazuh_agent_localfile_command_df_frequency: 360
+
+wazuh_agent_localfile_command_last:
+  command: '{{ wazuh_agent_localfile_command_last_command }}'
+  frequency: '360'
+  log_format: 'full_command'
+
+wazuh_agent_localfile_command_last_command: 'last -n 20'
+
+wazuh_agent_localfile_command_last_frequency: 360
+
+wazuh_agent_localfile_command_netstat:
+  command: '{{ wazuh_agent_localfile_command_netstat_command }}'
+  frequency: '{{ wazuh_agent_localfile_command_netstat_frequency }}'
+  log_format: 'full_command'
+
+wazuh_agent_localfile_command_netstat_command: |
+  netstat -tln | grep -v 127.0.0.1 | sort
+
+wazuh_agent_localfile_command_netstat_frequency: 360
+
+wazuh_agent_localfile_syslog:
+  - '{{ wazuh_agent_localfile_syslog_messages }}'
+  - '{{ wazuh_agent_localfile_syslog_secure }}'
+
+wazuh_agent_localfile_syslog_messages:
+  log_format: 'syslog'
+  location: '{{ wazuh_agent_localfile_syslog_messages_location }}'
+
+wazuh_agent_localfile_syslog_messages_location: '/var/log/messages'
+
+wazuh_agent_localfile_syslog_secure:
+  log_format: 'syslog'
+  location: '{{ wazuh_agent_localfile_syslog_secure_location }}'
+
+wazuh_agent_localfile_syslog_secure_location: '/var/log/secure'
+
+wazuh_agent_rootcheck_basedirectory_: '/'
+
+wazuh_agent_rootcheck_rootkitdir_: |
+  /var/ossec/etc/rootcheck
+
+wazuh_agent_rootcheck_systemaudit_: '{{
+  wazuh_agent_rootcheck_systemaudit_list_|flatten
+  |map("regex_replace","^",wazuh_agent_rootcheck_systemaudit_dir_)
+  |difference([wazuh_agent_rootcheck_systemaudit_dir_])|list }}'
+
+wazuh_agent_rootcheck_systemaudit_list_:
+  - 'system_audit_rcl.txt'
+  - 'system_audit_ssh.txt'
+  - '{{ wazuh_cis_file|default(none) }}'
+
+wazuh_agent_rootcheck_systemaudit_dir_: '/var/ossec/etc/shared/'
+
+wazuh_agent_syscheck_directories_:
+  - +check_all: true
+    +realtime: true
+    +restrict: '^/var/ossec/etc/shared/agent.conf$'
+    _: '/var/ossec/etc/shared'
+  - +check_all: true
+    _: '/etc,/usr/bin,/usr/sbin'
+  - +check_all: true
+    _: '/bin,/sbin'
+
+wazuh_agent_syscheck_ignore_:
+  - '/etc/adjtime'
+  - '/etc/cups/certs'
+  - '/etc/dumpdates'
+  - '/etc/hosts.deny'
+  - '/etc/httpd/logs'
+  - '/etc/mail/statistics'
+  - '/etc/mnttab'
+  - '/etc/mtab'
+  - '/etc/random-seed'
+  - '/etc/random.seed'
+  - '/etc/svc/volatile'
+  - '/etc/utmpx'
+  - '/etc/wtmpx'
+
+wazuh_agent_syscheck_nodiff_: '/etc/ssl/private.key'
+
+wazuh_agent_wodle_ciscat_ciscatpath_: '/var/ossec/wodles/ciscat'
+
+wazuh_agent_wodle_command_vuls_command_: '/usr/bin/python
+  /var/ossec/wodles/vuls/vuls.py
+  {{ wazuh_agent_wodle_command_vuls_command_args|join(" ") }}'
+
+wazuh_agent_wodle_osquery_binpath_: null
+
+wazuh_agent_wodle_osquery_confdir_: '/etc/osquery'
+
+wazuh_agent_wodle_osquery_logdir_: '/var/log/osquery'
+
+wazuh_java_path: '{{ wazuh_java_install|ternary("/usr/bin",
+                    "/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin") }}'

@@ -1,0 +1,10 @@
+---
+
+wazuh_agent_wodle_openscap_content_:
+  - +type: 'oval'
+    +path: 'cve-redhat-7-ds.xml'
+  - +type: 'xccdf'
+    +path: 'ssg-centos-7-ds.xml'
+    profile:
+      - 'xccdf_org.ssgproject.content_profile_pci-dss'
+      - 'xccdf_org.ssgproject.content_profile_common'

@@ -1,0 +1,23 @@
+---
+
+- name: 'Only check enabled wodles.'
+  block:
+    - name: 'Check whether cis-cat wodle is enabled.'
+      set_fact:
+        wazuh_ciscat_enabled: true
+      when: 'wazuh_wodle_name == "cis-cat"'
+    - name: 'Check whether open-scap wodle is enabled.'
+      set_fact:
+        wazuh_openscap_enabled: true
+      when: 'wazuh_wodle_name == "open-scap"'
+    - name: 'Check whether vulnerability-checking is enabled.'
+      set_fact:
+        wazuh_vuls_enabled: true
+      when:
+        - 'wazuh_wodle_name == "command"'
+        - 'wazuh_wodle_settings.command|default("")|regex_search("vuls[.]py")'
+  vars:
+    wazuh_wodle_name: '{{ wazuh_wodle["+name"]|default(none) }}'
+  when:
+    - 'wodle_name is not none'
+    - 'not wazuh_wodle.disabled|default(false)'

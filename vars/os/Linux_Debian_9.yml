@@ -1,0 +1,7 @@
+---
+
+wazuh_agent_wodle_openscap_content_:
+  +name: 'open-scap'
+  content:
+    +type: 'oval'
+    +path: 'cve-debian-9-oval.xml'

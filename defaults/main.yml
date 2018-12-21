@@ -1,0 +1,585 @@
+---
+
+wazuh_agent:
+  ossec_config:
+    active-response: '{{ wazuh_agent_activeresponse }}'
+    client: '{{ wazuh_agent_client }}'
+    client_buffer: '{{ wazuh_agent_clientbuffer }}'
+    labels: '{{ wazuh_agent_labels }}'
+    localfile: '{{ wazuh_agent_localfile }}'
+    logging:
+      log_format: '{{ wazuh_agent_logformat }}'
+    rootcheck: '{{ wazuh_agent_rootcheck }}'
+    socket: '{{ wazuh_agent_socket }}'
+    syscheck: '{{ wazuh_agent_syscheck }}'
+    wodle: '{{ wazuh_agent_wodle }}'
+
+wazuh_agent_activeresponse:
+  ca_store: '{{ wazuh_agent_activeresponse_castore }}'
+  ca_verification: '{{ wazuh_agent_activeresponse_caverification }}'
+  disabled: '{{ wazuh_agent_activeresponse_disabled }}'
+  repeated_offenders: '{{ wazuh_agent_activeresponse_repeatedoffenders }}'
+
+wazuh_agent_activeresponse_castore: 'wpk_root.pem'
+
+wazuh_agent_activeresponse_caverification: true
+
+wazuh_agent_activeresponse_disabled: false
+
+wazuh_agent_client:
+  auto_restart: '{{ wazuh_agent_client_autorestart }}'
+  config-profile: '{{ wazuh_agent_client_configprofile }}'
+  crypto_method: '{{ wazuh_agent_client_cryptomethod }}'
+  local_ip: '{{ wazuh_agent_client_localip }}'
+  notify_time: '{{ wazuh_agent_client_notifytime }}'
+  server: '{{ wazuh_agent_client_server }}'
+  time-reconnect: '{{ wazuh_agent_client_timereconnect }}'
+
+wazuh_agent_client_autorestart: true
+
+wazuh_agent_client_configprofile: null
+
+wazuh_agent_client_cryptomethod: 'aes'
+
+wazuh_agent_client_localip: null
+
+wazuh_agent_client_notifytime: 60
+
+wazuh_agent_client_server:
+  address: '{{ wazuh_agent_client_server_address }}'
+  port: '{{ wazuh_agent_client_server_port }}'
+  protocol: '{{ wazuh_agent_client_server_protocol }}'
+
+wazuh_agent_client_server_address: '127.0.0.1'
+
+wazuh_agent_client_server_port: 1514
+
+wazuh_agent_client_server_protocol: 'udp'
+
+wazuh_agent_client_timereconnect: 300
+
+wazuh_agent_clientbuffer:
+  disabled: '{{ wazuh_agent_clientbuffer_disabled }}'
+  events_per_second: '{{ wazuh_agent_clientbuffer_eventspersecond }}'
+  queue_size: '{{ wazuh_agent_clientbuffer_queuesize }}'
+
+wazuh_agent_clientbuffer_disabled: false
+
+wazuh_agent_clientbuffer_eventspersecond: 500
+
+wazuh_agent_clientbuffer_queuesize: 5000
+
+wazuh_agent_labels: null
+
+wazuh_agent_localfile: '{{ wazuh_agent_localfile_ }}'
+
+wazuh_agent_localfile_: null
+
+wazuh_agent_logformat: 'plain'
+
+wazuh_agent_rootcheck:
+  base_directory: '{{ wazuh_agent_rootcheck_basedirectory }}'
+  check_dev: '{{ wazuh_agent_rootcheck_checkdev }}'
+  check_files: '{{ wazuh_agent_rootcheck_checkfiles }}'
+  check_if: '{{ wazuh_agent_rootcheck_checkif }}'
+  check_pids: '{{ wazuh_agent_rootcheck_checkpids }}'
+  check_ports: '{{ wazuh_agent_rootcheck_checkports }}'
+  check_sys: '{{ wazuh_agent_rootcheck_checksys }}'
+  check_trojans: '{{ wazuh_agent_rootcheck_checktrojans }}'
+  check_unixaudit: '{{ wazuh_agent_rootcheck_checkunixaudit }}'
+  check_winapps: '{{ wazuh_agent_rootcheck_checkwinapps }}'
+  check_winaudit: '{{ wazuh_agent_rootcheck_checkwinaudit }}'
+  check_winmalware: '{{ wazuh_agent_rootcheck_checkwinmalware }}'
+  disabled: '{{ wazuh_agent_rootcheck_disabled }}'
+  frequency: '{{ wazuh_agent_rootcheck_frequency }}'
+  readall: '{{ wazuh_agent_rootcheck_readall }}'
+  rootkit_files: '{{ wazuh_agent_rootcheck_rootkitfiles }}'
+  rootkit_trojans: '{{ wazuh_agent_rootcheck_rootkittrojans }}'
+  scanall: '{{ wazuh_agent_rootcheck_scanall }}'
+  skip_nfs: '{{ wazuh_agent_rootcheck_skipnfs }}'
+  system_audit: '{{ wazuh_agent_rootcheck_systemaudit }}'
+  windows_apps: '{{ wazuh_agent_rootcheck_windowsapps }}'
+  windows_audit: '{{ wazuh_agent_rootcheck_windowsaudit }}'
+  windows_malware: '{{ wazuh_agent_rootcheck_windowsmalware }}'
+
+wazuh_agent_rootcheck_basedirectory: '{{
+  wazuh_agent_rootcheck_basedirectory_ }}'
+
+wazuh_agent_rootcheck_basedirectory_: null
+
+wazuh_agent_rootcheck_checkdev: true
+
+wazuh_agent_rootcheck_checkfiles: '{{
+  [wazuh_agent_rootcheck_rootkitfiles]|flatten|length>0 }}'
+
+wazuh_agent_rootcheck_checkif: true
+
+wazuh_agent_rootcheck_checkpids: true
+
+wazuh_agent_rootcheck_checkports: true
+
+wazuh_agent_rootcheck_checksys: true
+
+wazuh_agent_rootcheck_checktrojans: '{{
+  [wazuh_agent_rootcheck_rootkittrojans]|flatten|length>0 }}'
+
+wazuh_agent_rootcheck_checkunixaudit: '{{ ansible_system == "Linux" }}'
+
+wazuh_agent_rootcheck_checkwinapps: '{{
+  [wazuh_agent_rootcheck_windowsapps]|flatten|length>0 }}'
+
+wazuh_agent_rootcheck_checkwinaudit: '{{
+  [wazuh_agent_rootcheck_windowsaudit]|flatten|length>0 }}'
+
+wazuh_agent_rootcheck_checkwinmalware: '{{
+  [wazuh_agent_rootcheck_windowsmalware]|flatten|length>0 }}'
+
+wazuh_agent_rootcheck_disabled: false
+
+wazuh_agent_rootcheck_frequency: 43200
+
+wazuh_agent_rootcheck_readall: false
+
+wazuh_agent_rootcheck_rootkitdir_: '.'
+
+wazuh_agent_rootcheck_rootkitfiles: '{{
+  wazuh_agent_rootcheck_rootkitdir_
+  }}/rootkit_files.txt'
+
+wazuh_agent_rootcheck_rootkittrojans: '{{
+  wazuh_agent_rootcheck_rootkitdir_
+  }}/rootkit_trojans.txt'
+
+wazuh_agent_rootcheck_scanall: false
+
+wazuh_agent_rootcheck_skipnfs: false
+
+wazuh_agent_rootcheck_systemaudit: '{{
+  wazuh_agent_rootcheck_systemaudit_ }}'
+
+wazuh_agent_rootcheck_systemaudit_: null
+
+wazuh_agent_rootcheck_windowsapps: '{{
+  wazuh_agent_rootcheck_windowsapps_ }}'
+
+wazuh_agent_rootcheck_windowsapps_: null
+
+wazuh_agent_rootcheck_windowsaudit: '{{
+  wazuh_agent_rootcheck_windowsaudit_ }}'
+
+wazuh_agent_rootcheck_windowsaudit_: null
+
+wazuh_agent_rootcheck_windowsmalware: '{{
+  wazuh_agent_rootcheck_windowsmalware_ }}'
+
+wazuh_agent_rootcheck_windowsmalware_: null
+
+wazuh_agent_socket: '{{ wazuh_agent_socket_custom if wazuh_agent_socket_name else null }}'
+
+wazuh_agent_socket_custom:
+  location: '{{ wazuh_agent_socket_location }}'
+  mode: '{{ wazuh_agent_socket_mode }}'
+  name: '{{ wazuh_agent_socket_name }}'
+  prefix: '{{ wazuh_agent_socket_prefix }}'
+
+wazuh_agent_socket_location: '{{ "/var/run/" ~ wazuh_agent_socket_name|default("custom",true) ~ ".sock" }}'
+
+wazuh_agent_socket_mode: 'udp'
+
+wazuh_agent_socket_name: null
+
+wazuh_agent_socket_prefix: 'custom
+
+wazuh_agent_syscheck:
+  alert_new_files: '{{ wazuh_agent_syscheck_alertnewfiles }}'
+  auto_ignore: '{{ wazuh_agent_syscheck_autoignore }}'
+  directories: '{{ wazuh_agent_syscheck_directories }}'
+  frequency: '{{ wazuh_agent_syscheck_frequency }}'
+  ignore: '{{ wazuh_agent_syscheck_ignore }}'
+  nodiff: '{{ wazuh_agent_syscheck_nodiff }}'
+  prefilter_cmd: '{{ wazuh_agent_syscheck_prefiltercmd }}'
+  registry_ignore: '{{ wazuh_agent_syscheck_registryignore }}'
+  remove_old_diff: '{{ wazuh_agent_syscheck_removeolddiff }}'
+  restart_audit: '{{ wazuh_agent_syscheck_restartaudit }}'
+  scan_day: '{{ wazuh_agent_syscheck_scanday }}'
+  scan_on_start: '{{ wazuh_agent_syscheck_scanonstart }}'
+  scan_time: '{{ wazuh_agent_syscheck_scantime }}'
+  skip_nfs: '{{ wazuh_agent_syscheck_skipnfs }}'
+  windows_audit_interval: '{{
+    wazuh_agent_syscheck_windowsauditinterval }}'
+  windows_registry: '{{ wazuh_agent_syscheck_windowsregistry }}'
+
+wazuh_agent_syscheck_alertnewfiles: false
+
+wazuh_agent_syscheck_autoignore:
+  +frequency: 10
+  +timeframe: 3600
+  _: false
+
+wazuh_agent_syscheck_directories: '{{
+  wazuh_agent_syscheck_directories_ }}'
+
+wazuh_agent_syscheck_directories_: null
+
+wazuh_agent_syscheck_frequency: 43200
+
+wazuh_agent_syscheck_ignore: '{{
+  wazuh_agent_syscheck_ignore_ }}'
+
+wazuh_agent_syscheck_ignore_: null
+
+wazuh_agent_syscheck_nodiff: '{{
+  wazuh_agent_syscheck_nodiff_ }}'
+
+wazuh_agent_syscheck_nodiff_: null
+
+wazuh_agent_syscheck_prefiltercmd: null
+
+wazuh_agent_syscheck_registryignore: null
+
+wazuh_agent_syscheck_removeolddiff: true
+
+wazuh_agent_syscheck_restartaudit: true
+
+wazuh_agent_syscheck_scanday: null
+
+wazuh_agent_syscheck_scanonstart: true
+
+wazuh_agent_syscheck_scantime: null
+
+wazuh_agent_syscheck_skipnfs: true
+
+wazuh_agent_syscheck_windowsauditinterval: 0
+
+wazuh_agent_syscheck_windowsregistry: '{{
+  wazuh_agent_syscheck_windowsregistry_: }}'
+
+wazuh_agent_syscheck_windowsregistry_: null
+
+
+wazuh_agent_wodle:
+  - '{{ wazuh_agent_wodle_aws }}'
+  - '{{ wazuh_agent_wodle_ciscat }}'
+  - '{{ wazuh_agent_wodle_command }}'
+  - '{{ wazuh_agent_wodle_openscap }}'
+  - '{{ wazuh_agent_wodle_osquery }}'
+  - '{{ wazuh_agent_wodle_syscollector }}'
+
+wazuh_agent_wodle_aws:
+  +name: 'aws-s3'
+  access_key: '{{ wazuh_agent_wodle_aws_accesskey }}'
+  bucket: '{{ wazuh_agent_wodle_aws_bucket }}'
+  disabled: '{{ wazuh_agent_wodle_aws_disabled }}'
+  interval: '{{ wazuh_agent_wodle_aws_interval }}'
+  remove_from_bucket: '{{ wazuh_agent_wodle_aws_removefrombucket }}'
+  run_on_start: '{{ wazuh_agent_wodle_aws_runonstart }}'
+  secret_key: '{{ wazuh_agent_wodle_aws_secretkey }}'
+  skip_on_error: '{{ wazuh_agent_wodle_aws_skiponerror }}'
+
+wazuh_agent_wodle_aws_accesskey: null
+
+wazuh_agent_wodle_aws_bucket:
+  +type: '{{ wazuh_agent_wodle_aws_bucket_type }}'
+  access_key: '{{ wazuh_agent_wodle_aws_bucket_accesskey }}'
+  aws_account_alias: '{{ wazuh_agent_wodle_aws_bucket_awsaccountalias }}'
+  aws_account_id: '{{ wazuh_agent_wodle_aws_bucket_awsaccountid }}'
+  aws_profile: '{{ wazuh_agent_wodle_aws_bucket_awsprofile }}'
+  iam_role_arn: '{{ wazuh_agent_wodle_aws_bucketIamrolearn }}'
+  name: '{{ wazuh_agent_wodle_aws_bucket_name }}'
+  only_logs_after: '{{ wazuh_agent_wodle_aws_bucket_onlylogsafter }}'
+  path: '{{ wazuh_agent_wodle_aws_bucket_path }}'
+  regions: '{{ wazuh_agent_wodle_aws_bucket_regions }}'
+  secret_key: '{{ wazuh_agent_wodle_aws_bucket_secretkey }}'
+
+wazuh_agent_wodle_aws_bucket_type: 'cloudtrail'
+
+wazuh_agent_wodle_aws_bucket_accesskey: null
+
+wazuh_agent_wodle_aws_bucket_awsaccountalias: null
+
+wazuh_agent_wodle_aws_bucket_awsaccountid: null
+
+wazuh_agent_wodle_aws_bucket_awsprofile: null
+
+wazuh_agent_wodle_aws_bucketIamrolearn: null
+
+wazuh_agent_wodle_aws_bucket_name: null
+
+wazuh_agent_wodle_aws_bucket_onlylogsafter: '1970-JAN-01'
+
+wazuh_agent_wodle_aws_bucket_path: null
+
+wazuh_agent_wodle_aws_bucket_regions: null
+
+wazuh_agent_wodle_aws_bucket_secretkey: null
+
+wazuh_agent_wodle_aws_disabled: true
+
+wazuh_agent_wodle_aws_interval: '10m'
+
+wazuh_agent_wodle_aws_removefrombucket: true
+
+wazuh_agent_wodle_aws_runonstart: true
+
+wazuh_agent_wodle_aws_secretkey: null
+
+wazuh_agent_wodle_aws_skiponerror: true
+
+wazuh_agent_wodle_ciscat:
+  +name: 'cis-cat'
+  ciscat_path: '{{ wazuh_agent_wodle_ciscat_ciscatpath }}'
+  content: '{{ wazuh_agent_wodle_ciscat_content|default([]) }}'
+  disabled: '{{ wazuh_agent_wodle_ciscat_disabled }}'
+  interval: '{{ wazuh_agent_wodle_ciscat_interval }}'
+  java_path: '{{ wazuh_java_path }}'
+  scan-on-start: '{{ wazuh_agent_wodle_ciscat_scanonstart }}'
+  timeout: '{{ wazuh_agent_wodle_ciscat_timeout }}'
+
+wazuh_agent_wodle_ciscat_ciscatpath: '{{
+  wazuh_agent_wodle_ciscat_ciscatpath_ }}'
+
+wazuh_agent_wodle_ciscat_ciscatpath_: null
+
+wazuh_agent_wodle_ciscat_content: '{{
+  wazuh_agent_wodle_ciscat_content_ }}'
+
+wazuh_agent_wodle_ciscat_content_: null
+
+
+wazuh_agent_wodle_ciscat_disabled: true
+
+wazuh_agent_wodle_ciscat_interval: '1d'
+
+wazuh_agent_wodle_ciscat_scanonstart: true
+
+wazuh_agent_wodle_ciscat_timeout: 1800
+
+wazuh_agent_wodle_command: '{{
+  wazuh_agent_wodle_command_vuls }}'
+
+wazuh_agent_wodle_command_vuls:
+  +name: 'command'
+  command: '{{ wazuh_agent_wodle_command_vuls_command }}'
+  disabled: '{{ wazuh_agent_wodle_command_vuls_disabled }}'
+  ignore_output: '{{ wazuh_agent_wodle_command_vuls_ignoreoutput }}'
+  interval: '{{ wazuh_agent_wodle_command_vuls_interval }}'
+  run_on_start: '{{ wazuh_agent_wodle_command_vuls_runonstart }}'
+  skip_verification: '{{
+    wazuh_agent_wodle_command_vuls_skipverification }}'
+  tag: '{{ wazuh_agent_wodle_command_vuls_tag }}'
+  timeout: '{{ wazuh_agent_wodle_command_vuls_timeout }}'
+  verify_md5: '{{ wazuh_agent_wodle_command_vuls_verifymd5 }}'
+  verify_sha1: '{{ wazuh_agent_wodle_command_vuls_verifysha1 }}'
+  verify_sha256: '{{ wazuh_agent_wodle_command_vuls_verifysha256 }}'
+
+wazuh_agent_wodle_command_vuls_command: '{{
+  wazuh_agent_wodle_command_vuls_command_ }}'
+
+wazuh_agent_wodle_command_vuls_command_args:
+  - '--antiquity-limit'
+  - '{{ wazuh_agent_wodle_command_vuls_command_args_antiquity_limit }}'
+  - '{{ wazuh_agent_wodle_command_vuls_command_args_autoupdate
+        |ternary("--autoupdate","") }}'
+  - '--mincvss {{ wazuh_agent_wodle_command_vuls_command_args_mincvss }}'
+  - '--nvd-year'
+  - '{{ wazuh_agent_wodle_command_vuls_command_args_nvd_year }}'
+  - '{{ wazuh_agent_wodle_command_vuls_command_args_updatenvd
+        |ternary("--updatenvd","") }}'
+
+wazuh_agent_wodle_command_vuls_command_args_autoupdate: true
+
+wazuh_agent_wodle_command_vuls_command_args_antiquity_limit: 20
+
+wazuh_agent_wodle_command_vuls_command_args_mincvss: 5
+
+wazuh_agent_wodle_command_vuls_command_args_nvd_year: 2016
+
+wazuh_agent_wodle_command_vuls_command_args_updatenvd: true
+
+wazuh_agent_wodle_command_vuls_command_: null
+
+wazuh_agent_wodle_command_vuls_disabled: true
+
+wazuh_agent_wodle_command_vuls_ignoreoutput: false
+
+wazuh_agent_wodle_command_vuls_interval: '1d'
+
+wazuh_agent_wodle_command_vuls_runonstart: true
+
+wazuh_agent_wodle_command_vuls_skipverification: true
+
+wazuh_agent_wodle_command_vuls_tag: 'Wazuh-VULS'
+
+wazuh_agent_wodle_command_vuls_timeout: 0
+
+wazuh_agent_wodle_command_vuls_verifymd5: null
+
+wazuh_agent_wodle_command_vuls_verifysha1: null
+
+wazuh_agent_wodle_command_vuls_verifysha256: null
+
+wazuh_agent_wodle_openscap:
+  +name: 'open-scap'
+  content: '{{ wazuh_agent_wodle_openscap_content }}'
+  disabled: '{{ wazuh_agent_wodle_openscap_disabled }}'
+  interval: '{{ wazuh_agent_wodle_openscap_interval }}'
+  scan-on-start: '{wazuh_agent_wodle_openscap_scanonstart }}'
+  timeout: '{{ wazuh_agent_wodle_openscap_timeout }}'
+
+wazuh_agent_wodle_openscap_content: '{{
+  wazuh_agent_wodle_openscap_content_ }}'
+
+wazuh_agent_wodle_openscap_content_: null
+
+wazuh_agent_wodle_openscap_disabled: true
+
+wazuh_agent_wodle_openscap_interval: '1d'
+
+wazuh_agent_wodle_openscap_scanonstart: true
+
+wazuh_agent_wodle_openscap_timeout: 1800
+
+wazuh_agent_wodle_osquery:
+  +name: 'osquery'
+  add_labels: '{{ wazuh_agent_wodle_osquery_addlabels }}'
+  bin_path: '{{ wazuh_agent_wodle_osquery_binpath }}'
+  config_path: '{{ wazuh_agent_wodle_osquery_configpath }}'
+  disabled: '{{ wazuh_agent_wodle_osquery_disabled }}'
+  log_path: '{{ wazuh_agent_wodle_osquery_logpath }}'
+  pack: '{{ wazuh_agent_wodle_osquery_pack }}'
+  run_daemon: '{{ wazuh_agent_wodle_osquery_rundaemon }}'
+
+wazuh_agent_wodle_osquery_addlabels: true
+
+wazuh_agent_wodle_osquery_bindir_: '.'
+
+wazuh_agent_wodle_osquery_binpath: '{{
+  wazuh_agent_wodle_osquery_binpath_ }}'
+
+wazuh_agent_wodle_osquery_binpath_: '{{
+  wazuh_agent_wodle_osquery_bindir_ }}/osqueryd'
+
+wazuh_agent_wodle_osquery_confdir_: '.'
+
+wazuh_agent_wodle_osquery_configpath: '{{
+  wazuh_agent_wodle_osquery_confdir_ }}/osquery.conf'
+
+wazuh_agent_wodle_osquery_disabled: true
+
+wazuh_agent_wodle_osquery_logdir_: 'log'
+
+wazuh_agent_wodle_osquery_logpath: '{{
+  wazuh_agent_wodle_osquery_logdir_ }}/osqueryd.results.log'
+
+wazuh_agent_wodle_osquery_pack: null
+
+wazuh_agent_wodle_osquery_rundaemon: true
+
+wazuh_agent_wodle_syscollector:
+  +name: 'syscollector'
+  disabled: '{{ wazuh_agent_wodle_syscollector_disabled }}'
+  hardware: '{{ wazuh_agent_wodle_syscollector_hardware }}'
+  interval: '{{ wazuh_agent_wodle_syscollector_interval }}'
+  network: '{{ wazuh_agent_wodle_syscollector_network }}'
+  os: '{{ wazuh_agent_wodle_syscollector_os }}'
+  packages: '{{ wazuh_agent_wodle_syscollector_packages }}'
+  ports: '{{ wazuh_agent_wodle_syscollector_ports }}'
+  processes: '{{ wazuh_agent_wodle_syscollector_processes }}'
+  scan_on_start: '{{ wazuh_agent_wodle_syscollector_scanonstart }}'
+
+wazuh_agent_wodle_syscollector_disabled: true
+
+wazuh_agent_wodle_syscollector_hardware: true
+
+wazuh_agent_wodle_syscollector_interval: '1h'
+
+wazuh_agent_wodle_syscollector_network: true
+
+wazuh_agent_wodle_syscollector_os: true
+
+wazuh_agent_wodle_syscollector_packages: true
+
+wazuh_agent_wodle_syscollector_ports: true
+
+wazuh_agent_wodle_syscollector_processes: true
+
+wazuh_agent_wodle_syscollector_scanonstart: true
+
+wazuh_async_timeout: 1000
+
+wazuh_async_tries: 30
+
+wazuh_authd:
+  address: '{{ wazuh_authd_address }}'
+  api_enable: '{{ wazuh_authd_apienable }}'
+  api_pass: '{{ wazuh_authd_apipass }}'
+  api_port: '{{ wazuh_authd_apiport }}'
+  api_proto: '{{ wazuh_authd_apiproto }}'
+  api_user: '{{ wazuh_authd_apiuser }}'
+  enable: '{{ wazuh_authd_enable }}'
+  pass: '{{ wazuh_authd_pass }}'
+  port: '{{ wazuh_authd_port }}'
+  ssl_auto: '{{ wazuh_authd_sslauto }}'
+  ssl_ca: '{{ wazuh_authd_sslca }}'
+  ssl_cert: '{{ wazuh_authd_sslcert }}'
+  ssl_key: '{{ wazuh_authd_sslkey }}'
+
+wazuh_authd_address: '{{
+  [wazuh_agent_client_server]|flatten|first|attr("address")) }}'
+
+wazuh_authd_apienable: '{{ wazuh_authd_apiuser is string and
+                           wazuh_authd_apiuser|length>0 and
+                           wazuh_authd_apipass is string and
+                           wazuh_authd_apipass|length>0 }}'
+
+wazuh_authd_apihttps: false
+
+wazuh_authd_apipass: null
+
+wazuh_authd_apiport: 55000
+
+wazuh_authd_apiproto: '{{ "https" if wazuh_authd_apihttps else "http" }}'
+
+wazuh_authd_apiuser: null
+
+wazuh_authd_enable: '{{ wazuh_authd_pass is string and
+                       wazuh_authd_pass|length>0 }}'
+
+wazuh_authd_pass: null
+
+wazuh_authd_port: 1515
+
+wazuh_authd_sslauto: false
+
+wazuh_authd_sslca: null
+
+wazuh_authd_sslcert: null
+
+wazuh_authd_sslkey: null
+
+wazuh_java_install: false  # Change to install Oracle java.
+
+wazuh_java_path: null
+
+wazuh_repo_add: true
+
+wazuh_repo_remove: true
+
+wazuh_winagent_config:
+  dir: '{{ wazuh_winagent_dir }}'
+  md5: '{{ wazuh_winagent_md5 }}'
+  repo: '{{ wazuh_winagent_repo }}'
+  revision: '{{ wazuh_winagent_revision }}'
+  version: '{{ wazuh_winagent_version }}'
+
+wazuh_winagent_installer: 'C:/wazuh-agent-installer.msi'
+
+wazuh_winagent_dir: 'C:/Program Files (x86)/ossec-agent'
+
+wazuh_winagent_md5: '935d1993029021f3951b9511e2171207'
+
+wazuh_winagent_repo: 'https://packages.wazuh.com/3.x/windows'
+
+wazuh_winagent_revision: '1'
+
+wazuh_winagent_version: '3.3.1'

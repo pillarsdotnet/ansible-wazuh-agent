@@ -1,0 +1,102 @@
+---
+
+- name: 'Windows | Get current installed version'
+  args:
+    removes: "{{ wazuh_winagent_config.dir }}/ossec-agent.exe"
+  changed_when: false
+  failed_when: false
+  register: 'agent_version'
+  win_command: "{{ wazuh_winagent_config.dir }}/ossec-agent.exe -h"
+
+- name: 'Windows | Check Wazuh agent version installed'
+  set_fact:
+    correct_version: true
+  when:
+    - 'agent_version.stdout is defined'
+    - 'wazuh_winagent_config.version in agent_version.stdout'
+
+- name: 'Windows | Downloading windows Wazuh agent installer'
+  block:
+    - name: 'Windows | Downloading windows Wazuh agent installer (win_get_url)'
+      async: '{{ wazuh_async_timeout }}'
+      poll: 0
+      register: 'wazuh_agent_windows_1'
+      vars:
+        urlparts:
+          - '{{ wazuh_winagent_config.repo }}/wazuh-agent-'
+          - '{{ wazuh_winagent_config.version }}-'
+          - '{{ wazuh_winagent_config.revision }}.msi'
+      win_get_url:
+        dest: '{{ wazuh_winagent_installer }}'
+        url: '{{ urlparts|join }}'
+    - name: 'Windows | Downloading windows Wazuh agent installer (async_status)'
+      async_status:
+        jid: '{{ wazuh_agent_windows_1.ansible_job_id }}'
+      register: 'wazuh_agent_windows_1_result'
+      retries: '{{ wazuh_async_tries }}'
+      until: 'wazuh_agent_windows_1_result is defined and
+              wazuh_agent_windows_1_result.finished|default(false)'
+      when: 'wazuh_agent_windows_1 is defined and not (
+             wazuh_agent_windows_1.finished|default(false) or
+             wazuh_agent_windows_1.ansible_job_id is not defined)'
+    - name: 'Windows | Verify the downloaded Wazuh agent installer'
+      failed_when:
+        - 'installer_md5.stat.checksum != wazuh_winagent_config.md5'
+      register: 'installer_md5'
+      win_stat:
+        checksum_algorithm: 'md5'
+        get_checksum: true
+        path: '{{ wazuh_winagent_installer }}'
+    - name: 'Windows | Install Wazuh agent'
+      win_package:
+        arguments: 'APPLICATIONFOLDER={{ wazuh_winagent_config.dir }}'
+        path: '{{ wazuh_winagent_installer }}'
+  when:
+    - 'correct_version is not defined'
+
+
+
+- name: 'Windows | Check if client.keys exists'
+  notify: 'restart wazuh-agent windows'
+  register: 'check_windows_key'
+  tags:
+    - 'config'
+  win_stat:
+    get_checksum: false
+    path: '{{ wazuh_winagent_config.dir }}/client.keys'
+
+- name: 'Windows | Register agent'
+  args:
+    chdir: "{{ wazuh_winagent_config.dir }}"
+  notify: 'restart wazuh-agent windows'
+  register: 'agent_auth_output'
+  tags:
+    - 'config'
+  when:
+    - 'wazuh_agent_authd.enable'
+    - 'check_windows_key.stat.size|default(0) == 0'
+    - 'wazuh_agent_authd.address|default(none) is not none'
+  win_command: '{{ args|join(" ") }}'
+  vars:
+    args:
+      - '{{ wazuh_winagent_config.dir }}/agent-auth.exe'
+      - '-m {{ wazuh_agent_authd.address }}'
+      - '-p {{ wazuh_agent_authd.port }}'
+      - '{{ wazuh_agent_authd.pass|default("")|string|length>0
+            |ternary("-P %s"|format(wazuh_agent_authd.pass),"") }}'
+
+- name: 'Windows | Installing agent configuration (ossec.conf)'
+  include_role:
+    name: 'xml'
+  notify: 'restart wazuh-agent windows'
+  tags:
+    - 'config'
+  vars:
+    dest: "{{ wazuh_winagent_config.dir }}/ossec.conf"
+    header: '<!-- {{ wazuh_reference }}/ossec-conf -->'
+    newline_sequence: "\r\n"
+
+- name: 'Windows | Delete downloaded Wazuh agent installer file'
+  win_file:
+    path: 'C:/wazuh-agent-installer.msi'
+    state: 'absent'
