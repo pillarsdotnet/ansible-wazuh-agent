@@ -26,6 +26,8 @@ wazuh_agent_activeresponse_caverification: true
 
 wazuh_agent_activeresponse_disabled: false
 
+wauh_agent_activeresponse_repeatedoffenders: null
+
 wazuh_agent_client:
   auto_restart: '{{ wazuh_agent_client_autorestart }}'
   config-profile: '{{ wazuh_agent_client_configprofile }}'
