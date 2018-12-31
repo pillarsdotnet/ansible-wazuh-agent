@@ -90,7 +90,7 @@
         validate_certs: false
         method: 'POST'
         body:
-          name: '{{ inventory_hostname }}'
+          name: '{{ ansible_hostname }}'
         body_format: 'json'
         status_code: 200
         headers:
