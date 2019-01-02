@@ -19,7 +19,7 @@
   vars:
     ossec_config: '{{ wazuh_agent.ossec_config }}'
   when:
-    - '"ossec_config" in wazuh_agent_config'
+    - '"ossec_config" in wazuh_agent'
 
 - import_tasks: "Windows.yml"
   when: 'ansible_os_family == "Windows"'
