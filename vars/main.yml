@@ -158,9 +158,8 @@ wazuh_agent_schema:
         +restrict: *optional_string
         +tags: *optional_string
         +recursion_level: 'range(0,320,{:.0f})'
-        _:
-          .required: true
-          _: *non_empty
+        .required: true
+        _: *non_empty
       frequency:
         .default: 43200
         _: *posint
