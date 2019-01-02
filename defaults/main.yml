@@ -256,7 +256,7 @@ wazuh_agent_syscheck_skipnfs: true
 wazuh_agent_syscheck_windowsauditinterval: 0
 
 wazuh_agent_syscheck_windowsregistry: '{{
-  wazuh_agent_syscheck_windowsregistry_: }}'
+  wazuh_agent_syscheck_windowsregistry_ }}'
 
 wazuh_agent_syscheck_windowsregistry_: null
 
