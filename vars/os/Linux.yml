@@ -1,7 +1,7 @@
 ---
 
 wazuh_agent_localfile_: '{{ wazuh_agent_localfile_command
-                      |union(wazuh_agent_localfile_syslog }}'
+                     |union(wazuh_agent_localfile_syslog }}'
 
 wazuh_agent_localfile_command:
   - '{{ wazuh_agent_localfile_command_df }}'
@@ -19,7 +19,7 @@ wazuh_agent_localfile_command_df_frequency: 360
 
 wazuh_agent_localfile_command_last:
   command: '{{ wazuh_agent_localfile_command_last_command }}'
-  frequency: '360'
+  frequency: '{{ wazuh_agent_localfile_command_last_frequency }}'
   log_format: 'full_command'
 
 wazuh_agent_localfile_command_last_command: 'last -n 20'
@@ -27,12 +27,17 @@ wazuh_agent_localfile_command_last_command: 'last -n 20'
 wazuh_agent_localfile_command_last_frequency: 360
 
 wazuh_agent_localfile_command_netstat:
+  alias: 'netstat listening ports'
   command: '{{ wazuh_agent_localfile_command_netstat_command }}'
   frequency: '{{ wazuh_agent_localfile_command_netstat_frequency }}'
   log_format: 'full_command'
 
-wazuh_agent_localfile_command_netstat_command: |
-  netstat -tln | grep -v 127.0.0.1 | sort
+wazuh_agent_localfile_command_netstat_command: >-
+  netstat -tulpn
+  | sed 's/\([[:alnum:]]\+\)\ \+[[:digit:]]\+\ \+[[:digit:]]\+\
+  \+\(.*\):\([[:digit:]]*\)\ \+\([0-9\.\:\*]\+\).\+\
+  \([[:digit:]]*\/[[:alnum:]\-]*\)\.*/\1 \2 == \3 == \4 \5/'
+  | sort -k 4 -g | sed 's/ == \(.*\) ==/:\1/' | sed 1,2d
 
 wazuh_agent_localfile_command_netstat_frequency: 360
 
