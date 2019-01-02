@@ -59,8 +59,7 @@ wazuh_agent_localfile_syslog_secure_location: '/var/log/secure'
 
 wazuh_agent_rootcheck_basedirectory_: '/'
 
-wazuh_agent_rootcheck_rootkitdir_: |
-  /var/ossec/etc/rootcheck
+wazuh_agent_rootcheck_rootkitdir_: '/var/ossec/etc/rootcheck'
 
 wazuh_agent_rootcheck_systemaudit_: '{{
   wazuh_agent_rootcheck_systemaudit_list_|flatten
