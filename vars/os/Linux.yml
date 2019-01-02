@@ -1,7 +1,7 @@
 ---
 
 wazuh_agent_localfile_: '{{ wazuh_agent_localfile_command
-                     |union(wazuh_agent_localfile_syslog }}'
+                     |union(wazuh_agent_localfile_syslog) }}'
 
 wazuh_agent_localfile_command:
   - '{{ wazuh_agent_localfile_command_df }}'
