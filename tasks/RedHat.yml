@@ -29,8 +29,6 @@
       when:
         - 'oracle_java_task_rpm_download is defined'
         - 'oracle_java_task_rpm_download.finished'
-  tags:
-    - 'init'
   when: 'wazuh_java_install'
 
 - name: 'RedHat/CentOS/RedHat | Install openscap'
@@ -39,6 +37,4 @@
     name: 'openscap-scanner'
     state: 'present'
   poll: '{{ wazuh_async_poll }}'
-  tags:
-    - 'init'
   when: 'wazuh_openscap_enabled|default(false)'

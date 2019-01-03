@@ -45,8 +45,6 @@
         cache_valid_time: 3600
       async: '{{ wazuh_async_timeout }}'
       poll: '{{ wazuh_async_poll }}'
-  tags:
-    - 'init'
   when: 'wazuh_java_install'
 
 - block:
@@ -59,18 +57,12 @@
         cache_valid_time: 3600
       async: '{{ wazuh_async_timeout }}'
       poll: '{{ wazuh_async_poll }}'
-      tags:
-        - 'init'
     - name: 'Debian/Ubuntu | Check OpenScap installed version'
       shell: "dpkg --compare-versions \"$(dpkg-query --showformat='${Version}' --show libopenscap8)\" \">=\" \"1.2\"; echo $?"
       register: 'wazuh_openscap_version_check'
       changed_when: false
-      tags:
-        - 'config'
     - name: 'Debian/Ubuntu | Register OpenScap version check result'
       set_fact:
         wazuh_openscap_version_valid: '{{ wazuh_openscap_version_check.stdout == "0" }}'
       changed_when: false
-      tags:
-        - 'config'
   when: 'wazuh_openscap_enabled|default(false)'

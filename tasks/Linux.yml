@@ -12,8 +12,6 @@
     name: 'wazuh-agent'
     state: 'present'
   poll: '{{ wazuh_async_poll }}'
-  tags:
-    - 'init'
 
 - name: 'Linux | Check if client.keys exists'
   stat:
@@ -22,8 +20,6 @@
     get_mime: false
     path: '/var/ossec/etc/client.keys'
   register: 'check_keys'
-  tags:
-    - 'config'
 
 - name: 'Linux | Agent registration via authd'
   block:
@@ -37,9 +33,6 @@
         - '{{ wazuh_authd.ssl_ca|default("") }}'
         - '{{ wazuh_authd.ssl_cert|default("") }}'
         - '{{ wazuh_authd.ssl_key|default("") }}'
-      tags:
-        - 'config'
-        - 'authd'
       when:
         - 'item is string'
         - 'item|length>0'
@@ -50,9 +43,6 @@
       failed_when: '"Valid key created" not in agent_auth_output.stdout'
       no_log: false # '{{ wazuh_authd.pass|default('')|string|length>0 }}'
       register: 'agent_auth_output'
-      tags:
-        - 'config'
-        - 'authd'
       vars:
         argv:
           - '/var/ossec/bin/agent-auth -m {{ wazuh_authd.address }}'
@@ -102,9 +92,6 @@
       when:
         - 'check_keys.stat.size|default(0) == 0'
       become: false
-      tags:
-        - 'config'
-        - 'api'
     - name: 'Linux | Retieve new agent data via rest-API'
       uri:
         url: "{{ wazuh_authd.api_proto }}://\
@@ -122,9 +109,6 @@
       register: 'newagentdata_api'
       delegate_to: 'localhost'
       become: false
-      tags:
-        - 'config'
-        - 'api'
     - name: 'Linux | Register agent (via rest-API)'
       command: '/var/ossec/bin/manage_agents'
       environment:
@@ -138,9 +122,6 @@
       when:
         - 'check_keys.stat.size|default(0) == 0'
         - 'newagent_api.changed'
-      tags:
-        - 'config'
-        - 'api'
       notify: 'restart wazuh-agent'
   when:
     - 'wazuh_authd.address is string'
@@ -174,8 +155,6 @@
   when:
     - 'wazuh_vuls_enabled|default(false)'
     - 'ansible_distribution in ("Redhat","CentOS","Ubuntu","Debian","Oracle")'
-  tags:
-    - 'init'
 
 - name: 'Linux | Installing agent configuration (ossec.conf)'
   include_role:
@@ -189,9 +168,6 @@
     schema: '{{ wazuh_agent_schema }}'
     value: '{{ wazuh_agent }}'
   notify: 'restart wazuh-agent'
-  tags:
-    - 'init'
-    - 'config'
 
 - name: 'Linux | Ensure Wazuh Agent service is started and enabled'
   service:

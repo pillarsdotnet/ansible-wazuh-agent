@@ -14,8 +14,6 @@
       loop: '{{ [ossec_config.wodle|default([])]|flatten }}'
       loop_control:
         loop_var: 'wazuh_wodle'
-  tags:
-    - 'init'
   vars:
     ossec_config: '{{ wazuh_agent.ossec_config }}'
   when:

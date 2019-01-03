@@ -49,8 +49,6 @@
 - name: 'Windows | Check if client.keys exists'
   notify: 'restart wazuh-agent windows'
   register: 'check_windows_key'
-  tags:
-    - 'config'
   win_stat:
     get_checksum: false
     path: '{{ wazuh_winagent_config.dir }}/client.keys'
@@ -60,8 +58,6 @@
     chdir: "{{ wazuh_winagent_config.dir }}"
   notify: 'restart wazuh-agent windows'
   register: 'agent_auth_output'
-  tags:
-    - 'config'
   when:
     - 'wazuh_agent_authd.enable'
     - 'check_windows_key.stat.size|default(0) == 0'
@@ -79,8 +75,6 @@
   include_role:
     name: 'xml'
   notify: 'restart wazuh-agent windows'
-  tags:
-    - 'config'
   vars:
     dest: "{{ wazuh_winagent_config.dir }}/ossec.conf"
     header: '<!-- {{ wazuh_reference }}/ossec-conf -->'
