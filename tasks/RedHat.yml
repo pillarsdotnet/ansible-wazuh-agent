@@ -14,29 +14,18 @@
 
 - block:
     - name: 'RedHat/CentOS/Fedora | download Oracle Java RPM'
-      block:
-        - name: 'RedHat/CentOS/Fedora | download Oracle Java RPM (get_url)'
-          get_url:
-            url: '{{ oracle_java_rpm }}'
-            dest: '{{ oracle_java_rpm|basename }}'
-            headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
-          async: '{{ wazuh_async_timeout }}'
-          poll: 0
-          register: 'wazuh_agent_redhat_1'
-        - name: 'RedHat/CentOS/Fedora | download Oracle Java RPM (async_status)'
-          async_status:
-            jid: '{{ wazuh_agent_redhat_1.ansible_job_id }}'
-          register: 'oracle_java_task_rpm_download'
-          retries: '{{ wazuh_async_tries }}'
-          until: 'oracle_java_task_rpm_download is defined and
-                  oracle_java_task_rpm_download.finished|default(false)'
-          when: 'wazuh_agent_redhat_1 is defined and not (
-                 wazuh_agent_redhat_1.finished|default(false) or
-                 wazuh_agent_redhat_1.ansible_job_id is not defined)'
+      async: '{{ wazuh_async_timeout }}'
+      get_url:
+        url: '{{ oracle_java_rpm }}'
+        dest: '{{ oracle_java_rpm|basename }}'
+        headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
+      poll: '{{ wazuh_async_poll }}'
     - name: 'RedHat/CentOS/Fedora | Install Oracle Java RPM'
+      async: '{{ wazuh_async_timeout }}'
       package:
         name: '/tmp/{{ oracle_java_rpm|basename }}'
         state: 'present'
+      poll: '{{ wazuh_async_poll }}'
       when:
         - 'oracle_java_task_rpm_download is defined'
         - 'oracle_java_task_rpm_download.finished'
@@ -45,24 +34,11 @@
   when: 'wazuh_java_install'
 
 - name: 'RedHat/CentOS/RedHat | Install openscap'
-  block:
-    - name: 'RedHat/CentOS/RedHat | Install openscap (package)'
-      package:
-        name: 'openscap-scanner'
-        state: 'present'
-      async: '{{ wazuh_async_timeout }}'
-      poll: 0
-      register: 'wazuh_agent_redhat_2'
-    - name: 'RedHat/CentOS/RedHat | Install openscap (async_status)'
-      async_status:
-        jid: '{{ wazuh_agent_redhat_2.ansible_job_id }}'
-      register: 'wazuh_agent_redhat_2_result'
-      retries: '{{ wazuh_async_tries }}'
-      until: 'wazuh_agent_redhat_2_result is defined and
-              wazuh_agent_redhat_2_result.finished|default(false)'
-      when: 'wazuh_agent_redhat_2 is defined and not (
-             wazuh_agent_redhat_2.finished|default(false) or
-             wazuh_agent_redhat_2.ansible_job_id is not defined)'
+  async: '{{ wazuh_async_timeout }}'
+  package:
+    name: 'openscap-scanner'
+    state: 'present'
+  poll: '{{ wazuh_async_poll }}'
   tags:
     - 'init'
   when: 'wazuh_openscap_enabled|default(false)'

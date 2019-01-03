@@ -2,90 +2,36 @@
 
 - block:
     - name: 'Debian/Ubuntu | Install apt-transport-https and ca-certificates'
-      block:
-        - name: 'Debian/Ubuntu |
-                 Install apt-transport-https and ca-certificates (apt)'
-          apt:
-            name:
-              - 'apt-transport-https'
-              - 'ca-certificates'
-            state: 'present'
-            cache_valid_time: 3600
-          async: '{{ wazuh_async_timeout }}'
-          poll: 0
-          register: 'wazuh_agent_debian_1'
-        - name: 'Debian/Ubuntu |
-                Install apt-transport-https and ca-certificates (async_status)'
-          async_status:
-            jid: '{{ wazuh_agent_debian_1.ansible_job_id }}'
-          register: 'wazuh_agent_debian_1_result'
-          retries: '{{ wazuh_async_tries }}'
-          until: 'wazuh_agent_debian_1_result is defined and
-                  wazuh_agent_debian_1_result.finished|default(false)'
-          when: 'wazuh_agent_debian_1 is defined and not (
-                 wazuh_agent_debian_1.finished|default(false) or
-                 wazuh_agent_debian_1.ansible_job_id is not defined)'
+      apt:
+        name:
+          - 'apt-transport-https'
+          - 'ca-certificates'
+        state: 'present'
+        cache_valid_time: 3600
+      async: '{{ wazuh_async_timeout }}'
+      poll: '{{ wazuh_async_poll }}'
     - name: 'Debian/Ubuntu | Installing repository key'
-      block:
-        - name: 'Debian/Ubuntu | Installing repository key (apt_key)'
-          apt_key:
-            url: '{{ wazuh_repo_key }}'
-          async: '{{ wazuh_async_timeout }}'
-          poll: 0
-          register: 'wazuh_agent_debian_2'
-        - name: 'Debian/Ubuntu | Installing repository key (async_status)'
-          async_status:
-            jid: '{{ wazuh_agent_debian_2.ansible_job_id }}'
-          register: 'wazuh_agent_debian_2_result'
-          retries: '{{ wazuh_async_tries }}'
-          until: 'wazuh_agent_debian_2_result is defined and
-                  wazuh_agent_debian_2_result.finished|default(false)'
-          when: 'wazuh_agent_debian_2 is defined and not (
-                 wazuh_agent_debian_2.finished|default(false) or
-                 wazuh_agent_debian_2.ansible_job_id is not defined)'
+      apt_key:
+        url: '{{ wazuh_repo_key }}'
+      async: '{{ wazuh_async_timeout }}'
+      poll: '{{ wazuh_async_poll }}'
     - name: 'Debian/Ubuntu | Add Wazuh repositories'
-      block:
-        - name: 'Debian/Ubuntu | Add Wazuh repositories (apt_repository)'
-          apt_repository:
-            repo: '{{ wazuh_repo }}'
-            state: 'present'
-            update_cache: true
-          async: '{{ wazuh_async_timeout }}'
-          poll: 0
-          register: 'wazuh_agent_debian_3'
-        - name: 'Debian/Ubuntu | Add Wazuh repositories (async_status)'
-          async_status:
-            jid: '{{ wazuh_agent_debian_3.ansible_job_id }}'
-          register: 'wazuh_agent_debian_3_result'
-          retries: '{{ wazuh_async_tries }}'
-          until: 'wazuh_agent_debian_3_result is defined and
-                  wazuh_agent_debian_3_result.finished|default(false)'
-          when: 'wazuh_agent_debian_3 is defined and not (
-                 wazuh_agent_debian_3.finished|default(false) or
-                 wazuh_agent_debian_3.ansible_job_id is not defined)'
+      apt_repository:
+        repo: '{{ wazuh_repo }}'
+        state: 'present'
+        update_cache: true
+      async: '{{ wazuh_async_timeout }}'
+      poll: '{{ wazuh_async_poll }}'
   when: 'wazuh_repo_add'
 
 - block:
     - name: 'Debian/Ubuntu | Setting webupd8 repository'
-      block:
-        - name: 'Debian/Ubuntu | Setting webupd8 repository (apt_repository)'
-          apt_repository:
-            repo: '{{ oracle_java_repo }}'
-            codename: '{{ oracle_java_dist }}'
-            update_cache: true
-          async: '{{ wazuh_async_timeout }}'
-          poll: 0
-          register: 'wazuh_agent_debian_4'
-        - name: 'Debian/Ubuntu | Setting webupd8 repository (async_status)'
-          async_status:
-            jid: '{{ wazuh_agent_debian_4.ansible_job_id }}'
-          register: 'wazuh_agent_debian_4_result'
-          retries: '{{ wazuh_async_tries }}'
-          until: 'wazuh_agent_debian_4_result is defined and
-                  wazuh_agent_debian_4_result.finished|default(false)'
-          when: 'wazuh_agent_debian_4 is defined and not (
-                 wazuh_agent_debian_4.finished|default(false) or
-                 wazuh_agent_debian_4.ansible_job_id is not defined)'
+      apt_repository:
+        repo: '{{ oracle_java_repo }}'
+        codename: '{{ oracle_java_dist }}'
+        update_cache: true
+      async: '{{ wazuh_async_timeout }}'
+      poll: '{{ wazuh_async_poll }}'
     - name: 'Debian/Ubuntu | Accept Oracle Java 8 license'
       debconf:
         name: '{{ oracle_java_pkg }}'
@@ -93,52 +39,26 @@
         value: true
         vtype: 'boolean'
     - name: 'Debian/Ubuntu | Oracle Java 8 installer'
-      block:
-        - name: 'Debian/Ubuntu | Oracle Java 8 installer (apt)'
-          apt:
-            name: '{{ oracle_java_pkg }}'
-            state: 'present'
-            cache_valid_time: 3600
-          async: '{{ wazuh_async_timeout }}'
-          poll: 0
-          register: 'wazuh_agent_debian_5'
-        - name: 'Debian/Ubuntu | Oracle Java 8 installer (async_status)'
-          async_status:
-            jid: '{{ wazuh_agent_debian_5.ansible_job_id }}'
-          register: 'wazuh_agent_debian_5_result'
-          retries: '{{ wazuh_async_tries }}'
-          until: 'wazuh_agent_debian_5_result is defined and
-                  wazuh_agent_debian_5_result.finished|default(false)'
-          when: 'wazuh_agent_debian_5 is defined and not (
-                 wazuh_agent_debian_5.finished|default(false) or
-                 wazuh_agent_debian_5.ansible_job_id is not defined)'
+      apt:
+        name: '{{ oracle_java_pkg }}'
+        state: 'present'
+        cache_valid_time: 3600
+      async: '{{ wazuh_async_timeout }}'
+      poll: '{{ wazuh_async_poll }}'
   tags:
     - 'init'
   when: 'wazuh_java_install'
 
 - block:
     - name: 'Debian/Ubuntu | Install OpenScap'
-      block:
-        - name: 'Debian/Ubuntu | Install OpenScap (apt)'
-          apt:
-            name:
-              - 'libopenscap8'
-              - 'xsltproc'
-            state: 'present'
-            cache_valid_time: 3600
-          async: '{{ wazuh_async_timeout }}'
-          poll: 0
-          register: 'wazuh_agent_debian_6'
-        - name: 'Debian/Ubuntu | Install OpenScap (async_status)'
-          async_status:
-            jid: '{{ wazuh_agent_debian_6.ansible_job_id }}'
-          register: 'wazuh_agent_debian_6_result'
-          retries: '{{ wazuh_async_tries }}'
-          until: 'wazuh_agent_debian_6_result is defined and
-                  wazuh_agent_debian_6_result.finished|default(false)'
-          when: 'wazuh_agent_debian_6 is defined and not (
-                 wazuh_agent_debian_6.finished|default(false) or
-                 wazuh_agent_debian_6.ansible_job_id is not defined)'
+      apt:
+        name:
+          - 'libopenscap8'
+          - 'xsltproc'
+        state: 'present'
+        cache_valid_time: 3600
+      async: '{{ wazuh_async_timeout }}'
+      poll: '{{ wazuh_async_poll }}'
       tags:
         - 'init'
     - name: 'Debian/Ubuntu | Check OpenScap installed version'

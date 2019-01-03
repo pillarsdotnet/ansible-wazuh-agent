@@ -15,11 +15,11 @@
     - 'agent_version.stdout is defined'
     - 'wazuh_winagent_config.version in agent_version.stdout'
 
-- name: 'Windows | Downloading windows Wazuh agent installer'
+- name: 'Install correct version of Wazuh agent.'
   block:
-    - name: 'Windows | Downloading windows Wazuh agent installer (win_get_url)'
+    - name: 'Windows | Downloading windows Wazuh agent installer'
       async: '{{ wazuh_async_timeout }}'
-      poll: 0
+      poll: '{{ wazuh_async_poll }}'
       register: 'wazuh_agent_windows_1'
       vars:
         urlparts:
@@ -29,16 +29,6 @@
       win_get_url:
         dest: '{{ wazuh_winagent_installer }}'
         url: '{{ urlparts|join }}'
-    - name: 'Windows | Downloading windows Wazuh agent installer (async_status)'
-      async_status:
-        jid: '{{ wazuh_agent_windows_1.ansible_job_id }}'
-      register: 'wazuh_agent_windows_1_result'
-      retries: '{{ wazuh_async_tries }}'
-      until: 'wazuh_agent_windows_1_result is defined and
-              wazuh_agent_windows_1_result.finished|default(false)'
-      when: 'wazuh_agent_windows_1 is defined and not (
-             wazuh_agent_windows_1.finished|default(false) or
-             wazuh_agent_windows_1.ansible_job_id is not defined)'
     - name: 'Windows | Verify the downloaded Wazuh agent installer'
       failed_when:
         - 'installer_md5.stat.checksum != wazuh_winagent_config.md5'

@@ -509,9 +509,9 @@ wazuh_agent_wodle_syscollector_processes: true
 
 wazuh_agent_wodle_syscollector_scanonstart: true
 
-wazuh_async_timeout: 1000
+wazuh_async_poll: 10
 
-wazuh_async_tries: 30
+wazuh_async_timeout: 1000
 
 wazuh_authd:
   address: '{{ wazuh_authd_address }}'
