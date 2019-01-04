@@ -567,7 +567,7 @@ wazuh_java_path: null
 
 wazuh_repo_add: true
 
-wazuh_repo_remove: true
+wazuh_repo_remove: false
 
 wazuh_winagent_config:
   dir: '{{ wazuh_winagent_dir }}'
