@@ -7,6 +7,26 @@
                      (_{{ ansible_distribution }})?\
                      (_{{ ansible_distribution_major_version }})?.yml"
 
+- name: 'Pre-installation check.'
+  block:
+
+    - name: 'Check whether wazuh-agent is installed.'
+      check_mode: true
+      ignore_errors: true
+      package:
+        name: 'wazuh-agent'
+        state: 'present'
+      register: 'wazuh_agent_package'
+
+    - name: 'Purge /var/ossec directory before installation.'
+      file:
+        path: '/var/ossec'  # TODO: purge packages owning this directory, if any.
+        state: 'absent'
+      when: 'wazuh_agent_package is failed
+          or wazuh_agent_package is changed'
+
+  when: 'wazuh_purge'
+
 - name: 'Check certain ossec_config settings.'
   block:
     - name: 'Check whether certain wodles are enabled.'
@@ -19,8 +39,8 @@
   when:
     - '"ossec_config" in wazuh_agent'
 
-- import_tasks: "Windows.yml"
+- include_tasks: "Windows.yml"
   when: 'ansible_os_family == "Windows"'
 
-- import_tasks: "Linux.yml"
+- include_tasks: "Linux.yml"
   when: 'ansible_system == "Linux"'

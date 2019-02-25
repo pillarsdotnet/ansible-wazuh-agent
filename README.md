@@ -47,6 +47,10 @@ Role Variables
   * `wazuh_authd_sslca`: Filename of CA certificate (in `/var/ossec/etc`) used to [verify](https://documentation.wazuh.com/current/user-manual/reference/tools/agent-auth.html?highlight=verify) the server.
   * `wazuh_authd_sslcert`: Filename of [agent certificate](https://documentation.wazuh.com/current/user-manual/reference/tools/agent-auth.html?highlight=-x) (in `/var/ossec/etc`).
 
+* `wazuh_purge`: Completely remove the `/var/ossec` directory before installation. (defaults to `false`).
+* `wazuh_repo_add`: Add the wazuh repo prior to installation.
+* `wazuh_repo_remove`: Remove the wazuh repo after installation.
+
 Example Playbook
 ----------------
 

@@ -565,6 +565,8 @@ wazuh_java_install: false  # Change to install Oracle java.
 
 wazuh_java_path: null
 
+wazuh_purge: false
+
 wazuh_repo_add: true
 
 wazuh_repo_remove: false
